@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web App - Pedidos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Gestão de Pedidos</h1>
+
+        <!-- Cadastro de Clientes -->
+        <section>
+            <h2>Cadastro de Clientes</h2>
+            <form id="clientForm">
+                <input type="text" id="clientName" placeholder="Nome do cliente" required>
+                <input type="file" id="clientPhoto" accept="image/*" required>
+                <button type="submit">Cadastrar Cliente</button>
+            </form>
+            <ul id="clientList"></ul>
+        </section>
+
+        <!-- Cadastro de Produtos -->
+        <section>
+            <h2>Cadastro de Produtos</h2>
+            <form id="productForm">
+                <input type="text" id="productName" placeholder="Nome do produto" required>
+                <input type="number" id="productPrice" placeholder="Preço" step="0.01" required>
+                <input type="text" id="productBarcode" placeholder="Código de barras" required>
+                <input type="file" id="productPhoto" accept="image/*" required>
+                <button type="submit">Cadastrar Produto</button>
+            </form>
+            <ul id="productList"></ul>
+        </section>
+
+        <!-- Lançar Pedido -->
+        <section>
+            <h2>Lançar Pedido</h2>
+            <button id="scanBarcode">Escanear Código de Barras</button>
+            <ul id="orderList"></ul>
+            <p>Total: R$ <span id="orderTotal">0.00</span></p>
+        </section>
+    </div>
+
+    <script src="https://unpkg.com/quagga/dist/quagga.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
