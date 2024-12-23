@@ -1,10 +1,24 @@
-// Arrays para armazenar dados
+// Firebase Configuração
+const firebaseConfig = {
+    apiKey: "AIzaSyCMa3_Wu8CEGHyE8C9tYr0p2vG1lLN6MeE",  
+    authDomain: "lojaallice.firebaseapp.com",  
+    projectId: "lojaallice",  
+    storageBucket: "lojaallice.firebasestorage.app",  
+    messagingSenderId: "486050182727",  
+    appId: "1:486050182727:web:5223d7b29d18246af86362",  
+    measurementId: "G-EK3W7TJGFQ"  
+};  
+
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Dados Locais
 let clients = [];
 let products = [];
 let currentOrder = [];
 let orderTotal = 0;
 
-// Cadastro de clientes
+// Cadastro de Clientes
 document.getElementById("clientForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const name = document.getElementById("clientName").value;
@@ -19,7 +33,7 @@ document.getElementById("clientForm").addEventListener("submit", (e) => {
 function updateClientList() {
     const clientList = document.getElementById("clientList");
     clientList.innerHTML = "";
-    clients.forEach((client, index) => {
+    clients.forEach((client) => {
         const li = document.createElement("li");
         li.innerHTML = `<strong>${client.name}</strong><br>
                         <img src="${client.photoURL}" alt="Foto do cliente" width="100">`;
@@ -27,7 +41,7 @@ function updateClientList() {
     });
 }
 
-// Cadastro de produtos
+// Cadastro de Produtos
 document.getElementById("productForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const name = document.getElementById("productName").value;
@@ -44,7 +58,7 @@ document.getElementById("productForm").addEventListener("submit", (e) => {
 function updateProductList() {
     const productList = document.getElementById("productList");
     productList.innerHTML = "";
-    products.forEach((product, index) => {
+    products.forEach((product) => {
         const li = document.createElement("li");
         li.innerHTML = `<strong>${product.name}</strong><br>Preço: R$${product.price.toFixed(2)}<br>
                         Código: ${product.barcode}<br>
@@ -53,17 +67,15 @@ function updateProductList() {
     });
 }
 
-// Lançamento de pedidos
+// Lançar Pedido
 document.getElementById("scanBarcode").addEventListener("click", () => {
     Quagga.init({
         inputStream: {
             name: "Live",
             type: "LiveStream",
-            target: document.querySelector("body") // Usando a câmera
+            target: document.querySelector("body"),
         },
-        decoder: {
-            readers: ["ean_reader"] // Leitura de código de barras EAN
-        }
+        decoder: { readers: ["ean_reader"] },
     }, (err) => {
         if (err) {
             console.error(err);
@@ -74,7 +86,7 @@ document.getElementById("scanBarcode").addEventListener("click", () => {
 
     Quagga.onDetected((result) => {
         const barcode = result.codeResult.code;
-        const product = products.find(p => p.barcode === barcode);
+        const product = products.find((p) => p.barcode === barcode);
 
         if (product) {
             currentOrder.push(product);
@@ -90,10 +102,44 @@ document.getElementById("scanBarcode").addEventListener("click", () => {
 function updateOrderList() {
     const orderList = document.getElementById("orderList");
     orderList.innerHTML = "";
-    currentOrder.forEach((product, index) => {
+    currentOrder.forEach((product) => {
         const li = document.createElement("li");
         li.textContent = `${product.name} - R$${product.price.toFixed(2)}`;
         orderList.appendChild(li);
     });
     document.getElementById("orderTotal").textContent = orderTotal.toFixed(2);
+}
+
+// Salvar Dados no Firebase
+function saveToFirebase() {
+    firebase.database().ref("appData").set({
+        clients,
+        products,
+        currentOrder,
+    }, (error) => {
+        if (error) {
+            alert("Erro ao salvar no Firebase.");
+        } else {
+            alert("Dados salvos com sucesso!");
+        }
+    });
+}
+
+// Carregar Dados do Firebase
+function loadFromFirebase() {
+    firebase.database().ref("appData").once("value").then((snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            clients = data.clients || [];
+            products = data.products || [];
+            currentOrder = data.currentOrder || [];
+            updateClientList();
+            updateProductList();
+            updateOrderList();
+        } else {
+            alert("Nenhum dado encontrado no Firebase.");
+        }
+    }).catch((error) => {
+        console.error("Erro ao carregar dados:", error);
+    });
 }

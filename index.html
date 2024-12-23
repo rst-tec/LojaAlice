@@ -41,8 +41,17 @@
             <ul id="orderList"></ul>
             <p>Total: R$ <span id="orderTotal">0.00</span></p>
         </section>
+
+        <!-- Salvar/Carregar Dados no Firebase -->
+        <section>
+            <h2>Gestão de Dados</h2>
+            <button onclick="saveToFirebase()">Salvar no Firebase</button>
+            <button onclick="loadFromFirebase()">Carregar do Firebase</button>
+        </section>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
     <script src="https://unpkg.com/quagga/dist/quagga.min.js"></script>
     <script src="script.js"></script>
 </body>
