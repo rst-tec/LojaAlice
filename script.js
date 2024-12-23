@@ -1,16 +1,25 @@
 // Firebase Configuração
-const firebaseConfig = {
-    apiKey: "AIzaSyCMa3_Wu8CEGHyE8C9tYr0p2vG1lLN6MeE",  
-    authDomain: "lojaallice.firebaseapp.com",  
-    projectId: "lojaallice",  
-    storageBucket: "lojaallice.firebasestorage.app",  
-    messagingSenderId: "486050182727",  
-    appId: "1:486050182727:web:5223d7b29d18246af86362",  
-    measurementId: "G-EK3W7TJGFQ"  
-};  
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCMa3_Wu8CEGHyE8C9tYr0p2vG1lLN6MeE",
+  authDomain: "lojaallice.firebaseapp.com",
+  projectId: "lojaallice",
+  storageBucket: "lojaallice.firebasestorage.app",
+  messagingSenderId: "486050182727",
+  appId: "1:486050182727:web:5223d7b29d18246af86362",
+  measurementId: "G-EK3W7TJGFQ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 // Dados Locais
 let clients = [];
